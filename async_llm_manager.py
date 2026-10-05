@@ -16,10 +16,10 @@ _CLIENTS: dict[Provider, type[BaseClient]] = {
 class AsyncLLMManager:
     def __init__(self, config: LLMConfig) -> None:
         try:
-            client_cls = _CLIENTS[config.provider]
+            llm_client = _CLIENTS[config.provider]
         except KeyError:
             raise ValueError(f"Proveedor no soportado: {config.provider}") from None
-        self._client: BaseClient = client_cls(config.api_key,config.model,config.temperature,config.max_tokens)
+        self._client: BaseClient = llm_client(config.api_key.get_secret_value(), config.model, config.temperature, config.max_tokens)
 
     async def generate(self, messages: list[ChatMessage]) -> ModelResponse:
         return await self._client.generate(messages)

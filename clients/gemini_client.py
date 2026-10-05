@@ -35,6 +35,7 @@ class GeminiClient(BaseClient):
                     temperature=self.temperature,
                     max_output_tokens=self.max_tokens,
                     system_instruction=system_instruction,
+                    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
                 ),
             )
             return ModelResponse(provider=Provider.GEMINI, model=self.model, content=response.text)
@@ -52,6 +53,7 @@ class GeminiClient(BaseClient):
                     temperature=self.temperature,
                     max_output_tokens=self.max_tokens,
                     system_instruction=system_instruction,
+                    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
                 ),
             )
             async for chunk in stream:

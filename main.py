@@ -10,7 +10,7 @@ from schemas import ChatMessage, LLMConfig, Provider
 _PROVIDERS: list[tuple[Provider, str, str]] = [
     (Provider.OPENAI, "OPENAI_API_KEY", "gpt-4o-mini"),
     (Provider.ANTHROPIC, "ANTHROPIC_API_KEY", "claude-sonnet-4-5"),
-    (Provider.GEMINI, "GEMINI_API_KEY", "gemini-2.5-flash"),
+    (Provider.GEMINI, "GEMINI_API_KEY", "gemini-3.5-flash"),
 ]
 
 
@@ -24,7 +24,7 @@ def build_config() -> LLMConfig:
                 model=model,
                 api_key=api_key,
                 temperature=0.5,
-                max_tokens=500,
+                max_tokens=1500,
             )
     raise RuntimeError(
         "No se encontró ninguna API key"
