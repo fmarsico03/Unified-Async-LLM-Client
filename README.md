@@ -40,27 +40,29 @@ NVIDIA NIM expone una API compatible con OpenAI, por lo que `NvidiaClient` reuti
 
 ## Instalación
 
-Requiere Python 3.10+.
+Requiere Python 3.12.
 
 ```bash
-python -m venv .venv
 # Windows
-.venv\Scripts\activate
+py -3.12 -m venv venv
+venv\Scripts\activate
 # Linux / macOS
-source .venv/bin/activate
+python3.12 -m venv venv
+source venv/bin/activate
 
 pip install -r requirements.txt
 ```
 
 ## Configuración
 
-Copiá el archivo de ejemplo y completá al menos una API key:
+Copiá el archivo de ejemplo, elegí el proveedor con `LLM_PROVIDER` y completá su API key:
 
 ```bash
 cp .env.example .env
 ```
 
 ```env
+LLM_PROVIDER=openai    # openai | anthropic | gemini | nvidia
 OPENAI_API_KEY=sk-...
 OPENAI_MODEL=          # opcional, si queda vacío se usa el modelo por defecto
 ANTHROPIC_API_KEY=
@@ -71,7 +73,7 @@ NVIDIA_API_KEY=
 NVIDIA_MODEL=
 ```
 
-`main.py` usa el **primer proveedor que tenga API key**, en este orden: OpenAI → Anthropic → NVIDIA → Gemini.
+`main.py` usa el proveedor indicado en `LLM_PROVIDER` (por defecto `openai`). Si el valor no es válido o falta la API key de ese proveedor, el script termina con un mensaje de error claro. Para cambiar de proveedor alcanza con modificar esa línea del `.env`.
 
 ## Uso
 
