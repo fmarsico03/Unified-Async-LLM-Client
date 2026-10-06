@@ -4,12 +4,14 @@ from clients.anthropic_client import AnthropicClient
 from clients.base_client import BaseClient
 from clients.gemini_client import GeminiClient
 from clients.openai_client import OpenAIClient
+from clients.nvidia_client import NvidiaClient
 from schemas import ChatMessage, LLMConfig, ModelResponse, Provider
 
 _CLIENTS: dict[Provider, type[BaseClient]] = {
     Provider.OPENAI: OpenAIClient,
     Provider.ANTHROPIC: AnthropicClient,
     Provider.GEMINI: GeminiClient,
+    Provider.NVIDIA: NvidiaClient,
 }
 
 

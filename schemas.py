@@ -18,6 +18,7 @@ class Provider(str, Enum):
     OPENAI = "openai"
     ANTHROPIC = "anthropic"
     GEMINI = "gemini"
+    NVIDIA = "nvidia"
 
 class LLMConfig(BaseModel):
     provider: Provider

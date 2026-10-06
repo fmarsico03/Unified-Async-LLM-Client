@@ -7,21 +7,23 @@ from dotenv import load_dotenv
 from async_llm_manager import AsyncLLMManager
 from schemas import ChatMessage, LLMConfig, Provider
 
-_PROVIDERS: list[tuple[Provider, str, str]] = [
-    (Provider.OPENAI, "OPENAI_API_KEY", "gpt-4o-mini"),
-    (Provider.ANTHROPIC, "ANTHROPIC_API_KEY", "claude-sonnet-4-5"),
-    (Provider.GEMINI, "GEMINI_API_KEY", "gemini-3.5-flash"),
+# (proveedor, env de la API key, env del modelo, modelo por defecto)
+_PROVIDERS: list[tuple[Provider, str, str, str]] = [
+    (Provider.OPENAI, "OPENAI_API_KEY", "OPENAI_MODEL", "gpt-4o-mini"),
+    (Provider.ANTHROPIC, "ANTHROPIC_API_KEY", "ANTHROPIC_MODEL", "claude-sonnet-4-5"),
+    (Provider.NVIDIA, "NVIDIA_API_KEY", "NVIDIA_MODEL", "deepseek-ai/deepseek-v4.1-flash"),
+    (Provider.GEMINI, "GEMINI_API_KEY", "GEMINI_MODEL", "gemini-3.5-flash"),
 ]
 
 
 def build_config() -> LLMConfig:
     load_dotenv()
-    for provider, env_var, model in _PROVIDERS:
-        api_key = os.getenv(env_var)
+    for provider, key_env, model_env, default_model in _PROVIDERS:
+        api_key = os.getenv(key_env)
         if api_key:
             return LLMConfig(
                 provider=provider,
-                model=model,
+                model=os.getenv(model_env) or default_model,
                 api_key=api_key,
                 temperature=0.5,
                 max_tokens=1500,

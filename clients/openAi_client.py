@@ -1,4 +1,4 @@
-from typing import AsyncGenerator, List
+from typing import AsyncGenerator, List, Optional
 
 from openai import AsyncOpenAI, APIError, RateLimitError, APIConnectionError
 
@@ -6,8 +6,11 @@ from clients.base_client import BaseClient
 from schemas import ChatMessage, ModelResponse, Provider
 
 class OpenAIClient(BaseClient):
+    provider: Provider = Provider.OPENAI
+    base_url: Optional[str] = None
+
     def __init__(self, api_key: str, model: str, temperature: float, max_tokens: int):
-        self._client = AsyncOpenAI(api_key=api_key)
+        self._client = AsyncOpenAI(api_key=api_key, base_url=self.base_url)
         self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
@@ -21,19 +24,19 @@ class OpenAIClient(BaseClient):
                 max_tokens=self.max_tokens,
             )
             return ModelResponse(
-                provider=Provider.OPENAI,
+                provider=self.provider,
                 model=self.model,
                 content=response.choices[0].message.content,
             )
         except RateLimitError as e:
-            return ModelResponse(provider=Provider.OPENAI, model=self.model, content="",
+            return ModelResponse(provider=self.provider, model=self.model, content="",
                                     error=f"Límite de cuota excedido: {e}")
         except APIConnectionError as e:
-            return ModelResponse(provider=Provider.OPENAI, model=self.model, content="",
+            return ModelResponse(provider=self.provider, model=self.model, content="",
                                     error=f"Error de conexión: {e}")
         except APIError as e:
-            return ModelResponse(provider=Provider.OPENAI, model=self.model, content="",
-                                    error=f"Error de la API de OpenAI: {e}")
+            return ModelResponse(provider=self.provider, model=self.model, content="",
+                                    error=f"Error de la API de {self.provider.value}: {e}")
 
     async def generate_stream(self, messages: List[ChatMessage]) -> AsyncGenerator[str, None]:
         try:
