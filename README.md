@@ -75,14 +75,6 @@ NVIDIA_MODEL=
 
 `main.py` usa el proveedor indicado en `LLM_PROVIDER` (por defecto `openai`). Si el valor no es válido o falta la API key de ese proveedor, el script termina con un mensaje de error claro. Para cambiar de proveedor alcanza con modificar esa línea del `.env`.
 
-## Uso
-
-### Ejecutar el ejemplo
-
-```bash
-python main.py
-```
-
 Envía una pregunta al modelo, imprime la respuesta completa y luego la vuelve a pedir en modo streaming.
 
 ## Agregar un nuevo proveedor
