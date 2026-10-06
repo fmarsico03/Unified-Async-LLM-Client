@@ -26,7 +26,7 @@ class OpenAIClient(BaseClient):
             return ModelResponse(
                 provider=self.provider,
                 model=self.model,
-                content=response.choices[0].message.content,
+                content=response.choices[0].message.content or "",
             )
         except RateLimitError as e:
             return ModelResponse(provider=self.provider, model=self.model, content="",
